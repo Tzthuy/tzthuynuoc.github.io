@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Intro - Nồi Nước Nóng</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('nenlop.png');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .content-box {
+      max-width: 700px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 30px 40px;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.2rem;
+      line-height: 2rem;
+      position: relative;
+    }
+
+    .character {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 200px;
+      height: auto;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #startButton {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #ff5252;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+
+    #startButton:hover {
+      background-color: #ff7a7a;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="content-box">
+      <div id="storyText"></div>
+      <button id="startButton">Bắt đầu trò chơi</button>
+    </div>
+    <img id="characterImg" src="" alt="Nhân vật" class="character" />
+  </div>
+
+  <script>
+    const storyLines = [
+      "Bạn là một học sinh trung học bình thường...",
+      "Mỗi ngày, bạn đến lớp, học bài, ôn thi, tham gia hoạt động...",
+      "Dù đôi lúc mệt, bạn vẫn nghĩ: 'Chắc ai cũng vậy mà...'",
+      "Nhưng áp lực cứ âm thầm tích tụ...",
+      "Và rồi, một ngày nọ...",
+      "Bạn mở mắt... thấy mình đang ở trong một chiếc nồi nước ấm...",
+      "Nước đang dần nóng lên...",
+      "Muốn thoát ra, bạn phải nhận ra điều gì đang xảy ra với mình..."
+    ];
+
+    const storyText = document.getElementById("storyText");
+    const startButton = document.getElementById("startButton");
+    const characterImg = document.getElementById("characterImg");
+
+    // Lấy giới tính từ localStorage
+    const gioiTinh = localStorage.getItem("gioiTinh");
+    if (gioiTinh === "nam") {
+      characterImg.src = "nhanvatnam.png";
+    } else {
+      characterImg.src = "nhanvatnu.png";
+    }
+
+    // Hiệu ứng gõ chữ từng dòng
+    let currentLine = 0;
+    function typeLine(line, index = 0) {
+      if (index < line.length) {
+        storyText.innerHTML += line.charAt(index);
+        setTimeout(() => typeLine(line, index + 1), 40);
+      } else {
+        storyText.innerHTML += "<br/><br/>";
+        currentLine++;
+        if (currentLine < storyLines.length) {
+          setTimeout(() => typeLine(storyLines[currentLine]), 800);
+        } else {
+          startButton.style.display = "inline-block";
+        }
+      }
+    }
+
+    // Bắt đầu hiển thị intro
+    typeLine(storyLines[currentLine]);
+
+    // Khi bấm nút bắt đầu
+    startButton.addEventListener("click", () => {
+      window.location.href = "game.html"; // sẽ làm sau
+    });
+  </script>
+</body>
+</html>

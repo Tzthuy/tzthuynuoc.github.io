@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chọn nhân vật</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f0f0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: #333;
+    }
+
+    .character-select {
+      display: flex;
+      gap: 60px;
+    }
+
+    .character-option {
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .character-option:hover {
+      transform: scale(1.05);
+    }
+
+    .character-option img {
+      width: 140px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .character-option p {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bạn muốn nhập vai là ai?</h2>
+  <div class="character-select">
+    <div class="character-option" onclick="chonNhanVat('nam')">
+      <img src="nhanvatnam.png" alt="Nhân vật nam">
+      <p>Nam</p>
+    </div>
+    <div class="character-option" onclick="chonNhanVat('nu')">
+      <img src="nhanvatnu.png" alt="Nhân vật nữ">
+      <p>Nữ</p>
+    </div>
+  </div>
+
+  <script>
+    function chonNhanVat(gioiTinh) {
+      localStorage.setItem('gioiTinh', gioiTinh);
+   window.location.href = 'intro.html';
+    }
+  </script>
+</body>
+</html>

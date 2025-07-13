@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thoát khỏi nồi nước</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('noinuoc.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .temperature-bar {
+      width: 90%;
+      max-width: 400px;
+      height: 30px;
+      border: 2px solid #fff;
+      background-color: rgba(255,255,255,0.2);
+      margin-bottom: 40px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .heat-level {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(to right, red, orange);
+      transition: width 0.5s ease;
+    }
+
+    .question-box {
+      background-color: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .question-box h2 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .answers button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .answers button:hover {
+      background-color: #43a047;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="temperature-bar">
+      <div class="heat-level" id="heatLevel"></div>
+    </div>
+
+    <div class="question-box" id="questionBox">
+      <!-- Câu hỏi sẽ được hiển thị ở đây -->
+    </div>
+  </div>
+<script>
+  const questions = [
+    {
+      question: "Bạn thấy bản thân luôn mệt mỏi nhưng vẫn cố gắng gồng gánh mọi thứ. Bạn sẽ?",
+      answers: [
+        { text: "Tiếp tục vì nghĩ ai cũng vậy", correct: false },
+        { text: "Dừng lại, nghỉ ngơi và xin hỗ trợ", correct: true }
+      ]
+    },
+    {
+      question: "Thấy bạn mình có dấu hiệu kiệt sức nhưng luôn cười. Bạn sẽ?",
+      answers: [
+        { text: "Không nói gì vì sợ phiền", correct: false },
+        { text: "Quan tâm và gợi chuyện nhẹ nhàng", correct: true }
+      ]
+    },
+    {
+      question: "Lịch học dày đặc khiến bạn không còn thời gian nghỉ ngơi. Bạn sẽ?",
+      answers: [
+        { text: "Cố chịu vì sắp hết tuần rồi", correct: false },
+        { text: "Sắp xếp lại thời gian và ưu tiên bản thân", correct: true }
+      ]
+    },
+    {
+      question: "Bạn có cảm giác tê liệt cảm xúc. Bạn nên?",
+      answers: [
+        { text: "Coi như bình thường và tiếp tục học", correct: false },
+        { text: "Tìm người tin cậy để chia sẻ", correct: true }
+      ]
+    }
+  ];
+
+  let currentQuestion = 0;
+  let heat = 100;
+  const heatBar = document.getElementById("heatLevel");
+  const questionBox = document.getElementById("questionBox");
+
+  function updateHeatDisplay() {
+    heatBar.style.width = heat + "%";
+  }
+
+  function showQuestion() {
+    // Nếu hết câu hỏi
+    if (currentQuestion >= questions.length) {
+      questionBox.innerHTML = `<h2>Bạn đã trả lời hết câu hỏi rồi!</h2>`;
+      setTimeout(() => {
+        window.location.href = "end.html";
+      }, 2000);
+      return;
+    }
+
+    // Nếu thắng game (thoát nồi nước)
+    if (heat === 0) {
+      questionBox.innerHTML = `<h2>🎉 Bạn đã nhận ra vấn đề và kịp thời thoát ra khỏi chiếc nồi nước!</h2>`;
+      setTimeout(() => {
+        window.location.href = "end.html";
+      }, 2000);
+      return;
+    }
+
+    // Hiển thị câu hỏi
+    const q = questions[currentQuestion];
+    questionBox.innerHTML = `<h2>${q.question}</h2>`;
+    const answersDiv = document.createElement("div");
+    answersDiv.classList.add("answers");
+
+    q.answers.forEach(ans => {
+      const btn = document.createElement("button");
+      btn.textContent = ans.text;
+      btn.onclick = () => handleAnswer(ans.correct);
+      answersDiv.appendChild(btn);
+    });
+
+    questionBox.appendChild(answersDiv);
+  }
+
+  function handleAnswer(correct) {
+    if (correct) {
+      heat -= 25;
+      if (heat < 0) heat = 0;
+    } else {
+      heat += 10;
+      if (heat > 100) heat = 100;
+      alert("Sai rồi! Nhiệt tăng lên...");
+    }
+
+    updateHeatDisplay();
+    currentQuestion++;
+    showQuestion();
+  }
+
+  // Bắt đầu game
+  updateHeatDisplay();
+  showQuestion();
+</script>
+
+</body>
+</html>
